@@ -12,7 +12,7 @@ class RCONTool {
     protected \Socket $client;
     
     /** @var bool|false */
-    protected bool $authed = false;
+    protected bool $connected = false;
     
     /**
      * @param string $ip
@@ -21,7 +21,7 @@ class RCONTool {
      * 
      * @return bool
      */
-    public function authToServer (string $ip, int $port = 19132, string $password = "") : bool {
+    public function connectToServer (string $ip, int $port = 19132, string $password = "") : bool {
         $this->client = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         
         if ($this->client === false) {
@@ -42,7 +42,7 @@ class RCONTool {
             return false;
         }
         
-        $this->authed = true;
+        $this->connected = true;
         echo "Connection to Server Established.";
         return true;
     }
@@ -53,7 +53,7 @@ class RCONTool {
      * @return bool
      */
     public function sendCommand (string $command) : bool {
-        if (!$this->authed) return false;
+        if (!$this->connected) return false;
         $data = pack("VV", mt_rand(1000, 9999), SERVER_SEND_COMMAND) . $command . NULL_BYTES;
         socket_write($this->client, pack("V", strlen($data)) . $data);
         return true;
