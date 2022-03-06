@@ -1,0 +1,2 @@
+# RCONTool
+Simple RCON Tool
