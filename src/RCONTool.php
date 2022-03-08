@@ -79,7 +79,7 @@ class RCONTool {
     /**
      * @return void
      */
-    public function stop () : void {
+    public function close () : void {
         socket_close($this->client);
     }
 }
