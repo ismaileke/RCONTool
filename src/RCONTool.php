@@ -60,7 +60,7 @@ class RCONTool {
     }
     
     /**
-     * @return string
+     * @return bool
      */
     protected function responseData () : bool {
         $size = socket_read($this->client, 4);
