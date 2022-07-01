@@ -50,13 +50,16 @@ class RCONTool {
     /**
      * @param string $command
      * 
-     * @return void
+     * @return string
      */
-    public function sendCommand (string $command) : void {
-        if (!$this->connected) return;
+    public function sendCommand (string $command) : string {
+        if (!$this->connected) return "";
         $data = pack("VV", mt_rand(1000, 9999), SERVER_SEND_COMMAND) . $command . NULL_BYTES;
         socket_write($this->client, pack("V", strlen($data)) . $data);
-        $this->responseData();
+        $size = socket_read($this->socket, 4);
+        $size = unpack("V1DataSize", $size);
+        $responseData = socket_read($this->socket, $size["DataSize"]);
+        return $responseData;
     }
     
     /**
