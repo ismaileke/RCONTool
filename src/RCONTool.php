@@ -56,9 +56,9 @@ class RCONTool {
         if (!$this->connected) return "";
         $data = pack("VV", mt_rand(1000, 9999), SERVER_SEND_COMMAND) . $command . NULL_BYTES;
         socket_write($this->client, pack("V", strlen($data)) . $data);
-        $size = socket_read($this->socket, 4);
+        $size = socket_read($this->client, 4);
         $size = unpack("V1DataSize", $size);
-        $responseData = socket_read($this->socket, $size["DataSize"]);
+        $responseData = socket_read($this->client, $size["DataSize"]);
         return $responseData;
     }
     
